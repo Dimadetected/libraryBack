@@ -12,3 +12,17 @@ type Book struct {
 	Weight    int    `json:"weight" db:"weight" mapstructure:"weight"`
 	Age       string `json:"age" db:"age" mapstructure:"age"`
 }
+
+type BookTags struct {
+	BookID int `json:"book_id"`
+	TagID  int `json:"tag_id"`
+}
+type FavoriteBook struct {
+	BookID int `json:"book_id"`
+	UserID int `json:"user_id"`
+}
+type ProcessingBook struct {
+	BookID int `json:"book_id"`
+	UserID int `json:"user_id"`
+	Page   int `json:"page"`
+}

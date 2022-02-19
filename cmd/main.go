@@ -29,6 +29,50 @@ func main() {
 		books.DELETE("delete/:id", h.BooksDelete)
 		books.POST("/store", h.BooksStore)
 		books.PUT("/update/:id", h.BooksUpdate)
+
+		tags := books.Group("tags")
+		{
+			tags.POST("/", h.BooksTagsAdd)
+			tags.DELETE("/", h.BooksTagsDelete)
+		}
+
+		favorite := books.Group("favorite")
+		{
+			favorite.POST("/", h.FavoriteBooksAdd)
+			favorite.DELETE("/", h.FavoriteBooksDelete)
+		}
+
+		processing := books.Group("processing")
+		{
+			processing.POST("/", h.ProcessingBooksAdd)
+			processing.DELETE("/", h.ProcessingBooksDelete)
+		}
+	}
+
+	tags := router.Group("/tags")
+	{
+		tags.GET("/:id", h.TagGet)
+		tags.GET("/", h.TagsGet)
+		tags.DELETE("delete/:id", h.TagsDelete)
+		tags.POST("/store", h.TagsStore)
+		tags.PUT("/update/:id", h.TagsUpdate)
+	}
+	authors := router.Group("/authors")
+	{
+		authors.GET("/:id", h.AuthorsGet)
+		authors.GET("/", h.AuthorsGet)
+		authors.DELETE("delete/:id", h.AuthorsDelete)
+		authors.POST("/store", h.AuthorsStore)
+		authors.PUT("/update/:id", h.AuthorsUpdate)
+	}
+
+	users := router.Group("/users")
+	{
+		users.GET("/:id", h.UsersGet)
+		users.GET("/", h.UsersGet)
+		users.DELETE("delete/:id", h.UsersDelete)
+		users.POST("/store", h.UsersStore)
+		users.PUT("/update/:id", h.UsersUpdate)
 	}
 
 	if err := router.Run("localhost:8000"); err != nil {
