@@ -8,6 +8,11 @@ import (
 )
 
 func (h *Handler) AuthorsGet(c *gin.Context) {
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control")
+
 	limit, err := strconv.Atoi(c.Request.URL.Query().Get("limit"))
 	if err != nil {
 		limit = 0
@@ -25,6 +30,11 @@ func (h *Handler) AuthorsGet(c *gin.Context) {
 	respfmt.OK(c, Authors)
 }
 func (h *Handler) AuthorGet(c *gin.Context) {
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control")
+
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		respfmt.BadRequest(c, "id is not correct")
@@ -39,6 +49,11 @@ func (h *Handler) AuthorGet(c *gin.Context) {
 	respfmt.OK(c, Author)
 }
 func (h *Handler) AuthorsDelete(c *gin.Context) {
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control")
+
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		respfmt.BadRequest(c, "id is not correct")
@@ -52,6 +67,11 @@ func (h *Handler) AuthorsDelete(c *gin.Context) {
 	respfmt.OK(c, id)
 }
 func (h *Handler) AuthorsUpdate(c *gin.Context) {
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control")
+
 	var Author models.Author
 
 	if err := c.BindJSON(&Author); err != nil {
@@ -73,6 +93,11 @@ func (h *Handler) AuthorsUpdate(c *gin.Context) {
 	respfmt.OK(c, "ok")
 }
 func (h *Handler) AuthorsStore(c *gin.Context) {
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control")
+
 	var Author models.Author
 
 	if err := c.BindJSON(&Author); err != nil {

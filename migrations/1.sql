@@ -6,18 +6,16 @@ Create TABLE authors(
 CREATE TABLE books (
     id serial,
     name text,
+    description text,
     author_id int references authors(id),
-    seria text,
     year int,
-    page_count int,
-    format text,
-    type varchar(191),
-    weight int,
     age varchar(191)
 );
+
+
 alter table books
     add constraint books_pk
-        primary key (name, seria, author_id, year);
+        primary key (name,author_id, year);
 
 create table tags(
     id serial,

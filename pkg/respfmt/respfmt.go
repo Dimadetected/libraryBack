@@ -1,11 +1,13 @@
 package respfmt
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func BadRequest(c *gin.Context, err string) {
+	fmt.Println("badRequest:", err)
 	c.JSON(http.StatusBadRequest, map[string]interface{}{
 		"error": err,
 		"data":  nil,

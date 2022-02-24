@@ -32,8 +32,8 @@ func (r *Repositories) DeleteBook(id int) error {
 }
 func (r *Repositories) StoreBook(book models.Book) (int64, error) {
 	var id int64
-	if err := r.db.QueryRow(`INSERT INTO books (name, author_id, seria, year, page_count, format, type, weight, age) 
-									VALUES ($1,$2,$3, $4,$5,$6,$7,$8,$9) RETURNING id`, book.Name, book.AuthorID, book.Seria, book.Year, book.PageCount, book.Format, book.Type, book.Weight, book.Age).Scan(&id); err != nil {
+	if err := r.db.QueryRow(`INSERT INTO books (name, author_id, description, year, age) 
+									VALUES ($1,$2,$3, $4,$5) RETURNING id`, book.Name, book.AuthorID, book.Description, book.Year, book.Age).Scan(&id); err != nil {
 		return 0, err
 	}
 
@@ -43,14 +43,10 @@ func (r *Repositories) UpdateBook(id int, book models.Book) error {
 	if _, err := r.db.Exec(`UPDATE books 
 									SET name = $1,
 									    author_id = $2,
-									    seria = $3, 
+									    description = $3, 
 									    year = $4,
-									    page_count = $5,
-									    format = $6,
-									    type = $7,
-									    weight = $8,
-									    age = $9
-									 	where id = $10`, book.Name, book.AuthorID, book.Seria, book.Year, book.PageCount, book.Format, book.Type, book.Weight, book.Age, id); err != nil {
+									    age = $5
+									 	where id = $6`, book.Name, book.AuthorID, book.Description, book.Year, book.Age, id); err != nil {
 		return err
 	}
 
