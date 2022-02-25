@@ -7,7 +7,7 @@ import (
 
 func (r *Repositories) GetAuthors(limit, offset int) ([]models.Author, error) {
 	var Authors []models.Author
-	if err := r.db.Select(&Authors, `select * from Authors limit $1 offset $2`, limit, offset); err != nil {
+	if err := r.db.Select(&Authors, `select * from Authors order by name limit $1 offset $2`, limit, offset); err != nil {
 		return nil, err
 	}
 

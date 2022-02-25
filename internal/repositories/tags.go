@@ -6,7 +6,7 @@ import (
 
 func (r *Repositories) GetTags(limit, offset int) ([]models.Tag, error) {
 	var Tags []models.Tag
-	if err := r.db.Select(&Tags, `select * from tags limit $1 offset $2`, limit, offset); err != nil {
+	if err := r.db.Select(&Tags, `select * from tags order by id limit $1 offset $2`, limit, offset); err != nil {
 		return nil, err
 	}
 

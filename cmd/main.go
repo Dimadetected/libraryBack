@@ -27,6 +27,7 @@ func main() {
 	router.POST("/books/delete/:id", h.BooksDelete)
 	router.POST("/books/store", h.BooksStore)
 	router.POST("/books/update/:id", h.BooksUpdate)
+	router.POST("/books/files/:id", h.BooksFilesUpdate)
 	router.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -45,20 +46,16 @@ func main() {
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control")
 	})
-	//books := router.Group("/books")
-	//{
-	//	books.GET("/", h.BooksGet)
-	//	books.GET("/:id", h.BookGet)
-	//	books.DELETE("delete/:id", h.BooksDelete)
-	//	books.POST("/store", h.BooksStore)
-	//	books.PUT("/update/:id", h.BooksUpdate)
-	//}
-	//	tags := books.Group("tags")
-	//	{
-	//		tags.POST("/", h.BooksTagsAdd)
-	//		tags.DELETE("/", h.BooksTagsDelete)
-	//	}
-	//
+
+	router.POST("books/tags", h.BooksTagsAdd)
+	router.POST("books/tags/delete", h.BooksTagsDelete)
+
+	router.GET("/tags/:id", h.TagGet)
+	router.GET("/tags", h.TagsGet)
+	router.POST("/tags/delete/:id", h.TagsDelete)
+	router.POST("/tags/store", h.TagsStore)
+	router.POST("/tags/update/:id", h.TagsUpdate)
+
 	//	favorite := books.Group("favorite")
 	//	{
 	//		favorite.POST("/", h.FavoriteBooksAdd)

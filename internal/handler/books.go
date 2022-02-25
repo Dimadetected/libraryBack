@@ -80,7 +80,40 @@ func (h *Handler) BooksUpdate(c *gin.Context) {
 		return
 	}
 
-	if err := h.uc.UpdateBook(id, book); err != nil {
+	id, err = h.uc.UpdateBook(id, book)
+	if err != nil {
+		respfmt.InternalServer(c, err.Error())
+		return
+	}
+
+	respfmt.OK(c, map[string]interface{}{
+		"id": id,
+	})
+}
+func (h *Handler) BooksFilesUpdate(c *gin.Context) {
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control")
+
+	formFile, err := c.FormFile("file_upload")
+	if err != nil {
+		respfmt.BadRequest(c, err.Error())
+		return
+	}
+	file, err := formFile.Open()
+	if err != nil {
+		respfmt.BadRequest(c, err.Error())
+		return
+	}
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		respfmt.BadRequest(c, "id is not correct")
+		return
+	}
+
+	if err = h.uc.UpdateBookFile(id, file); err != nil {
 		respfmt.InternalServer(c, err.Error())
 		return
 	}
@@ -94,7 +127,6 @@ func (h *Handler) BooksStore(c *gin.Context) {
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control")
 
 	var book models.Book
-
 	if err := c.BindJSON(&book); err != nil {
 		respfmt.BadRequest(c, err.Error())
 		return

@@ -14,6 +14,7 @@ func BadRequest(c *gin.Context, err string) {
 	})
 }
 func InternalServer(c *gin.Context, err string) {
+	fmt.Println("err:", err)
 	c.JSON(http.StatusInternalServerError, map[string]interface{}{
 		"error": err,
 		"data":  nil,

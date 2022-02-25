@@ -8,8 +8,9 @@ CREATE TABLE books (
     name text,
     description text,
     author_id int references authors(id),
-    year int,
-    age varchar(191)
+    year text,
+    age varchar(191),
+    file text not null default ''
 );
 
 
