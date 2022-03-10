@@ -8,6 +8,11 @@ import (
 )
 
 func (h *Handler) TagsGet(c *gin.Context) {
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control")
+
 	limit, err := strconv.Atoi(c.Request.URL.Query().Get("limit"))
 	if err != nil {
 		limit = 0

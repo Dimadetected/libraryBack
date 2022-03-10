@@ -28,24 +28,12 @@ func main() {
 	router.POST("/books/store", h.BooksStore)
 	router.POST("/books/update/:id", h.BooksUpdate)
 	router.POST("/books/files/:id", h.BooksFilesUpdate)
-	router.Use(func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control")
-	})
 
 	router.GET("/authors/:id", h.AuthorsGet)
 	router.GET("/authors", h.AuthorsGet)
 	router.POST("/authors/delete/:id", h.AuthorsDelete)
 	router.POST("/authors/store", h.AuthorsStore)
 	router.POST("/authors/update/:id", h.AuthorsUpdate)
-	router.Use(func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control")
-	})
 
 	router.POST("books/tags", h.BooksTagsAdd)
 	router.POST("books/tags/delete", h.BooksTagsDelete)
@@ -56,36 +44,23 @@ func main() {
 	router.POST("/tags/store", h.TagsStore)
 	router.POST("/tags/update/:id", h.TagsUpdate)
 
-	//	favorite := books.Group("favorite")
-	//	{
-	//		favorite.POST("/", h.FavoriteBooksAdd)
-	//		favorite.DELETE("/", h.FavoriteBooksDelete)
-	//	}
-	//
-	//	processing := books.Group("processing")
-	//	{
-	//		processing.POST("/", h.ProcessingBooksAdd)
-	//		processing.DELETE("/", h.ProcessingBooksDelete)
-	//	}
-	//}
-	//
-	//tags := router.Group("/tags")
-	//{
-	//	tags.GET("/:id", h.TagGet)
-	//	tags.GET("/", h.TagsGet)
-	//	tags.DELETE("delete/:id", h.TagsDelete)
-	//	tags.POST("/store", h.TagsStore)
-	//	tags.PUT("/update/:id", h.TagsUpdate)
-	//}
-	//authors := router.Group("/authors")
-	//{
-	//	authors.GET("/:id", h.AuthorsGet)
-	//	authors.GET("/", h.AuthorsGet)
-	//	authors.DELETE("delete/:id", h.AuthorsDelete)
-	//	authors.POST("/store", h.AuthorsStore)
-	//	authors.PUT("/update/:id", h.AuthorsUpdate)
-	//}
-	//
+	router.GET("books/favorite/:user_id", h.FavoriteBooksGet)
+	router.POST("books/favorite", h.FavoriteBooksAdd)
+	router.POST("books/favorite/delete/:id", h.FavoriteBooksDelete)
+
+	router.GET("books/processing/:user_id", h.ProcessingBooksGet)
+	router.POST("books/processing", h.ProcessingBooksAdd)
+	router.POST("books/processing/delete/:id", h.ProcessingBooksDelete)
+
+	router.GET("books/reviews", h.BooksReviewsGet)
+	router.GET("books/review/:id", h.BooksReviewGet)
+	router.POST("books/reviews/store", h.BooksReviewsAdd)
+	router.POST("books/reviews/update/:id", h.BooksReviewsUpdate)
+	router.POST("books/reviews/delete/:id", h.BooksReviewsDelete)
+
+	router.GET("books/reviews/grades/:user_id/:book_id", h.BooksReviewsGradesGet)
+	router.POST("books/reviews/grades", h.BooksReviewsGradesAdd)
+
 	//users := router.Group("/users")
 	//{
 	//	users.GET("/:id", h.UsersGet)

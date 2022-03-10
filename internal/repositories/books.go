@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Dimadetected/libraryBack/internal/models"
 	"strings"
+	"time"
 )
 
 func (r *Repositories) GetBooks(limit, offset int) ([]models.Book, error) {
@@ -110,8 +111,16 @@ func (r *Repositories) FavoriteBooksAdd(fb models.FavoriteBook) error {
 
 	return nil
 }
-func (r *Repositories) FavoriteBooksDelete(fb models.FavoriteBook) error {
-	if _, err := r.db.Exec(`DELETE FROM favorite_books where book_id = $1 and user_id = $2`, fb.BookID, fb.UserID); err != nil {
+func (r *Repositories) FavoriteBooksGet(id int) ([]models.FavoriteBook, error) {
+	favorites := make([]models.FavoriteBook, 0)
+	if err := r.db.Select(&favorites, `SELECT * from favorite_books where user_id = $1`, id); err != nil {
+		return nil, err
+	}
+
+	return favorites, nil
+}
+func (r *Repositories) FavoriteBooksDelete(id int) error {
+	if _, err := r.db.Exec(`DELETE FROM favorite_books where id = $1`, id); err != nil {
 		return err
 	}
 
@@ -119,14 +128,22 @@ func (r *Repositories) FavoriteBooksDelete(fb models.FavoriteBook) error {
 }
 
 func (r *Repositories) ProcessingBooksAdd(pb models.ProcessingBook) error {
-	if _, err := r.db.Exec(`INSERT INTO processing_books (book_id,user_id, page) VALUES($1,$2,$3)`, pb.BookID, pb.UserID, pb.Page); err != nil {
+	if _, err := r.db.Exec(`INSERT INTO processing_books (book_id,user_id, page, pages, created) VALUES($1,$2,$3, $4,$5)`, pb.BookID, pb.UserID, pb.Page, pb.Pages, time.Now().Format("2006-01-02 15:04")); err != nil {
 		return err
 	}
 
 	return nil
 }
-func (r *Repositories) ProcessingBooksDelete(pb models.ProcessingBook) error {
-	if _, err := r.db.Exec(`DELETE FROM processing_books where book_id = $1 and user_id = $2`, pb.BookID, pb.UserID); err != nil {
+func (r *Repositories) ProcessingBooksGet(userID int) ([]models.ProcessingBook, error) {
+	pb := make([]models.ProcessingBook, 0)
+	if err := r.db.Select(&pb, `SELECT id,user_id,book_id,page,pages,to_char(created,'YYYY-MM-DD HH24:MI') as created from processing_books where user_id = $1 order by created asc`, userID); err != nil {
+		return nil, err
+	}
+
+	return pb, nil
+}
+func (r *Repositories) ProcessingBooksDelete(pb int) error {
+	if _, err := r.db.Exec(`DELETE FROM processing_books where id = $1`, pb); err != nil {
 		return err
 	}
 

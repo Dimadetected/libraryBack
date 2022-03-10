@@ -32,13 +32,19 @@ func (uc *UseCases) BooksTagsDelete(booksTags models.BookTags) error {
 func (uc *UseCases) FavoriteBooksAdd(fb models.FavoriteBook) error {
 	return uc.r.FavoriteBooksAdd(fb)
 }
-func (uc *UseCases) FavoriteBooksDelete(fb models.FavoriteBook) error {
-	return uc.r.FavoriteBooksDelete(fb)
+func (uc *UseCases) FavoriteBooksGet(id int) ([]models.FavoriteBook, error) {
+	return uc.r.FavoriteBooksGet(id)
+}
+func (uc *UseCases) FavoriteBooksDelete(id int) error {
+	return uc.r.FavoriteBooksDelete(id)
 }
 func (uc *UseCases) ProcessingBooksAdd(pb models.ProcessingBook) error {
 	return uc.r.ProcessingBooksAdd(pb)
 }
-func (uc *UseCases) ProcessingBooksDelete(pb models.ProcessingBook) error {
+func (uc *UseCases) ProcessingBooksGet(userID int) ([]models.ProcessingBook, error) {
+	return uc.r.ProcessingBooksGet(userID)
+}
+func (uc *UseCases) ProcessingBooksDelete(pb int) error {
 	return uc.r.ProcessingBooksDelete(pb)
 }
 

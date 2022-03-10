@@ -23,11 +23,15 @@ type BookTagsDB struct {
 	TagID  int `json:"tag_id" db:"tag_id"`
 }
 type FavoriteBook struct {
-	BookID int `json:"book_id"`
-	UserID int `json:"user_id"`
+	ID     int `json:"id" db:"id"`
+	BookID int `json:"book_id" db:"book_id"`
+	UserID int `json:"user_id" db:"user_id"`
 }
 type ProcessingBook struct {
-	BookID int `json:"book_id"`
-	UserID int `json:"user_id"`
-	Page   int `json:"page"`
+	ID     int    `json:"id" db:"id"`
+	BookID int    `json:"book_id" db:"book_id"`
+	UserID int    `json:"user_id" db:"user_id"`
+	Page   int    `json:"page" db:"page"`
+	Pages  int    `json:"pages" db:"pages"`
+	Create string `json:"created" db:"created"`
 }
