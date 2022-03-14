@@ -3,30 +3,72 @@ package repositories
 import (
 	"fmt"
 	"github.com/Dimadetected/libraryBack/internal/models"
+	"strconv"
 	"strings"
 	"time"
 )
 
-func (r *Repositories) GetBooks(limit, offset int) ([]models.Book, error) {
+func (r *Repositories) GetBooks(limit, offset, authorID int, year, name string, tags string) ([]models.Book, error) {
 
 	var books []models.Book
-	if err := r.db.Select(&books, `select * from books order by name limit $1 offset $2`, limit, offset); err != nil {
+	query := `select * from books`
+
+	where := make([]string, 0)
+	if authorID != 0 {
+		where = append(where, "author_id = "+strconv.Itoa(authorID))
+	}
+
+	if year != "" {
+		where = append(where, "year LIKE '%"+year+"%'")
+	}
+
+	if name != "" {
+		where = append(where, "name LIKE '%"+name+"%'")
+	}
+
+	if len(where) > 0 {
+		query += " WHERE " + strings.Join(where, " AND ")
+	}
+
+	query += ` order by name limit $1 offset $2`
+
+	if err := r.db.Select(&books, query, limit, offset); err != nil {
 		return nil, err
 	}
+	var tagsArr []string
+	if tags != "" {
+		tagsArr = strings.Split(tags, ",")
+	}
+
+	var newBooks []models.Book
 
 	for i := range books {
 		var booksTags []models.BookTagsDB
+
 		if err := r.db.Select(&booksTags, `select * from books_tags where book_id = $1`, books[i].ID); err != nil {
 			return nil, err
+		}
+
+		countTags := 0
+		for _, bt := range booksTags {
+			for _, ta := range tagsArr {
+				if strconv.Itoa(bt.TagID) == ta {
+					countTags++
+				}
+			}
 		}
 
 		books[i].Tags = make([]int, 0)
 		for _, bt := range booksTags {
 			books[i].Tags = append(books[i].Tags, bt.TagID)
 		}
+		fmt.Println(countTags, len(tagsArr))
+		if countTags == len(tagsArr) {
+			newBooks = append(newBooks, books[i])
+		}
 	}
 
-	return books, nil
+	return newBooks, nil
 }
 
 func (r *Repositories) GetBook(id int) (models.Book, error) {
@@ -136,7 +178,7 @@ func (r *Repositories) ProcessingBooksAdd(pb models.ProcessingBook) error {
 }
 func (r *Repositories) ProcessingBooksGet(userID int) ([]models.ProcessingBook, error) {
 	pb := make([]models.ProcessingBook, 0)
-	if err := r.db.Select(&pb, `SELECT id,user_id,book_id,page,pages,to_char(created,'YYYY-MM-DD HH24:MI') as created from processing_books where user_id = $1 order by created asc`, userID); err != nil {
+	if err := r.db.Select(&pb, `SELECT id,user_id,book_id,page,pages,to_char(created,'YYYY-MM-DD HH24:MI') as created from processing_books where user_id = $1 order by created desc`, userID); err != nil {
 		return nil, err
 	}
 

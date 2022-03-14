@@ -22,8 +22,17 @@ func (h *Handler) BooksGet(c *gin.Context) {
 	if err != nil {
 		offset = 0
 	}
+	name := c.Request.URL.Query().Get("name")
 
-	books, err := h.uc.GetBooks(limit, offset)
+	year := c.Request.URL.Query().Get("year")
+	tags := c.Request.URL.Query().Get("tags")
+
+	authorID, err := strconv.Atoi(c.Request.URL.Query().Get("author_id"))
+	if err != nil {
+		authorID = 0
+	}
+
+	books, err := h.uc.GetBooks(limit, offset, authorID, year, name, tags)
 	if err != nil {
 		respfmt.InternalServer(c, err.Error())
 		return

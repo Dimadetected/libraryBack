@@ -10,8 +10,8 @@ import (
 	"time"
 )
 
-func (uc *UseCases) GetBooks(limit, offset int) ([]models.Book, error) {
-	return uc.r.GetBooks(limit, offset)
+func (uc *UseCases) GetBooks(limit, offset, authorID int, year, name string, tags string) ([]models.Book, error) {
+	return uc.r.GetBooks(limit, offset, authorID, year, name, tags)
 }
 func (uc *UseCases) GetBook(id int) (models.Book, error) {
 	return uc.r.GetBook(id)
