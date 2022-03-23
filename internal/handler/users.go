@@ -1,12 +1,52 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/Dimadetected/libraryBack/internal/models"
 	"github.com/Dimadetected/libraryBack/pkg/respfmt"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
 
+func (h *Handler) UserRegister(c *gin.Context) {
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control")
+
+	var reg models.UserRegister
+	if err := c.BindJSON(&reg); err != nil {
+		respfmt.BadRequest(c, err.Error())
+		return
+	}
+
+	id, err := h.uc.UserRegister(&reg)
+	if err != nil {
+		respfmt.InternalServer(c, err.Error())
+		return
+	}
+	respfmt.OK(c, id)
+}
+func (h *Handler) UserLogin(c *gin.Context) {
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control")
+
+	var reg models.UserRegister
+	if err := c.BindJSON(&reg); err != nil {
+		respfmt.BadRequest(c, err.Error())
+		return
+	}
+	fmt.Println("qq:", reg)
+
+	id, err := h.uc.UserLogin(&reg)
+	if err != nil {
+		respfmt.InternalServer(c, err.Error())
+		return
+	}
+	respfmt.OK(c, id)
+}
 func (h *Handler) UsersGet(c *gin.Context) {
 	limit, err := strconv.Atoi(c.Request.URL.Query().Get("limit"))
 	if err != nil {

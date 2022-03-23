@@ -5,6 +5,12 @@ import "github.com/Dimadetected/libraryBack/internal/models"
 func (uc *UseCases) GetUsers(limit, offset int) ([]models.User, error) {
 	return uc.r.GetUsers(limit, offset)
 }
+func (uc *UseCases) UserRegister(reg *models.UserRegister) (int, error) {
+	return uc.r.UserRegister(reg)
+}
+func (uc *UseCases) UserLogin(reg *models.UserRegister) (int, error) {
+	return uc.r.UserLogin(reg)
+}
 func (uc *UseCases) GetUser(id int) (models.User, error) {
 	return uc.r.GetUser(id)
 }

@@ -61,6 +61,9 @@ func main() {
 	router.GET("books/reviews/grades/:user_id/:book_id", h.BooksReviewsGradesGet)
 	router.POST("books/reviews/grades", h.BooksReviewsGradesAdd)
 
+	router.POST("users/register", h.UserRegister)
+	router.POST("users/login", h.UserLogin)
+
 	//users := router.Group("/users")
 	//{
 	//	users.GET("/:id", h.UsersGet)

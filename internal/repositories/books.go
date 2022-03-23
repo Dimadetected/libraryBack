@@ -19,11 +19,11 @@ func (r *Repositories) GetBooks(limit, offset, authorID int, year, name string, 
 	}
 
 	if year != "" {
-		where = append(where, "year LIKE '%"+year+"%'")
+		where = append(where, "year ILIKE '%"+year+"%'")
 	}
 
 	if name != "" {
-		where = append(where, "name LIKE '%"+name+"%'")
+		where = append(where, "name ILIKE '%"+name+"%'")
 	}
 
 	if len(where) > 0 {

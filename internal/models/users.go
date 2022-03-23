@@ -6,3 +6,8 @@ type User struct {
 	Email    string `json:"email" db:"email" mapstructure:"email"`
 	Birthday string `json:"birthday" db:"birthday" mapstructure:"birthday"`
 }
+
+type UserRegister struct {
+	Email    string `json:"email" db:"email" mapstructure:"email"`
+	Password string `json:"password" db:"password" mapstructure:"password"`
+}
