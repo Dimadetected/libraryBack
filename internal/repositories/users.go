@@ -10,12 +10,12 @@ import (
 func (r *Repositories) UserRegister(reg *models.UserRegister) (int, error) {
 	var id int
 
-	if err := r.db.QueryRow(`SELECT id FROM users where email LIKE $1`, reg.Email).Scan(&id); err != nil {
+	if err := r.db.QueryRow(`SELECT id FROM users where email LIKE $1`, reg.Email).Scan(&id); err != nil && err.Error() != "sql: no rows in result set" {
 		return 0, err
 	}
 
 	if id != 0 {
-		return 0, errors.New("Такой email уже существует")
+		return 0, errors.New("Такой email уже занят")
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(reg.Password), bcrypt.DefaultCost)

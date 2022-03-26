@@ -178,7 +178,7 @@ func (r *Repositories) ProcessingBooksAdd(pb models.ProcessingBook) error {
 }
 func (r *Repositories) ProcessingBooksGet(userID int) ([]models.ProcessingBook, error) {
 	pb := make([]models.ProcessingBook, 0)
-	if err := r.db.Select(&pb, `SELECT id,user_id,book_id,page,pages,to_char(created,'YYYY-MM-DD HH24:MI') as created from processing_books where user_id = $1 order by created desc`, userID); err != nil {
+	if err := r.db.Select(&pb, `SELECT id,user_id,book_id,page,pages,to_char(created,'YYYY-MM-DD HH24:MI') as created from processing_books where user_id = $1 order by id desc`, userID); err != nil {
 		return nil, err
 	}
 
